@@ -31,10 +31,11 @@ namespace Todo.Api
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataContext")));
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPoliccy",
+                options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader().AllowCredentials()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
                 );
             });
         }
@@ -44,15 +45,16 @@ namespace Todo.Api
         {
             if (env.IsDevelopment())
             {
+
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseHsts();
             }
-
+           app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
-            app.UseCors();
+
             app.UseMvc();
         }
     }

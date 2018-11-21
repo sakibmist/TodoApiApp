@@ -14,21 +14,6 @@ namespace Todo.Api.Controllers
             _dataContex = dataContex;
         }
 
-        [HttpPost]
-        public IActionResult AddItem(Item item)
-        {
-            try
-            {
-                _dataContex.Add(item);
-                _dataContex.SaveChanges();
-                return Ok(item);
-            }
-            catch (System.Exception)
-            {
-                return BadRequest();
-            }
-        }
-
         [HttpGet]
         public IActionResult GetAllItems()
         {
@@ -43,7 +28,7 @@ namespace Todo.Api.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetItem")]
         public IActionResult GetItemById(int id)
         {
             try
@@ -54,6 +39,21 @@ namespace Todo.Api.Controllers
             catch (System.Exception)
             {
 
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AddItem(Item item)
+        {
+            try
+            {
+                _dataContex.Add(item);
+                _dataContex.SaveChanges();
+                return CreatedAtRoute("GetItem", new { id = item.Id }, item);
+            }
+            catch (System.Exception)
+            {
                 return BadRequest();
             }
         }
