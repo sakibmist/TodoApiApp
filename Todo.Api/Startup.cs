@@ -53,8 +53,7 @@ namespace Todo.Api
                 app.UseHsts();
             }
            app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
-
+            app.UseHttpsRedirection(); 
             app.UseMvc();
         }
     }

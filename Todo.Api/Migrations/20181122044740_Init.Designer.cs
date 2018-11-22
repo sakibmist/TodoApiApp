@@ -10,8 +10,8 @@ using Todo.Api.Models;
 namespace Todo.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20181120180741_Initial")]
-    partial class Initial
+    [Migration("20181122044740_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

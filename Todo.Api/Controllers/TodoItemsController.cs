@@ -8,10 +8,10 @@ namespace Todo.Api.Controllers
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
-        private readonly DataContext _dataContex;
-        public TodoItemsController(DataContext dataContex)
+        private readonly DataContext _dataContext;
+        public TodoItemsController(DataContext dataContext)
         {
-            _dataContex = dataContex;
+            _dataContext = dataContext;
         }
 
         [HttpGet]
@@ -19,7 +19,7 @@ namespace Todo.Api.Controllers
         {
             try
             {
-                var items = _dataContex.Items.ToList();
+                var items = _dataContext.Items.ToList();
                 return Ok(items);
             }
             catch (System.Exception)
@@ -33,7 +33,7 @@ namespace Todo.Api.Controllers
         {
             try
             {
-                var item = _dataContex.Items.FirstOrDefault(x => x.Id == id);
+                var item = _dataContext.Items.FirstOrDefault(x => x.Id == id);
                 return Ok(item);
             }
             catch (System.Exception)
@@ -48,8 +48,8 @@ namespace Todo.Api.Controllers
         {
             try
             {
-                _dataContex.Add(item);
-                _dataContex.SaveChanges();
+                _dataContext.Add(item);
+                _dataContext.SaveChanges();
                 return CreatedAtRoute("GetItem", new { id = item.Id }, item);
             }
             catch (System.Exception)
@@ -63,15 +63,15 @@ namespace Todo.Api.Controllers
         {
             try
             {
-                var item = _dataContex.Items.FirstOrDefault(x => x.Id == id);
+                var item = _dataContext.Items.FirstOrDefault(x => x.Id == id);
                 if (item == null) return null;
-                _dataContex.Items.Remove(item);
-                _dataContex.SaveChanges();
+                _dataContext.Items.Remove(item);
+                _dataContext.SaveChanges();
                 return Ok();
             }
             catch (System.Exception)
             {
-                return BadRequest();
+                return BadRequest(); //statusCode 400
             }
         }
 
@@ -80,13 +80,13 @@ namespace Todo.Api.Controllers
         {
             try
             {
-                if (id != item.Id) return BadRequest("Invalid Data");
-                var data = _dataContex.Items.FirstOrDefault(x => x.Id == id);
-                if (data == null) return NotFound();
+                if (id != item.Id) return BadRequest("Invalid Data");// validation status 400
+                var data = _dataContext.Items.FirstOrDefault(x => x.Id == id);
+                if (data == null) return NotFound(); // validation
                 data.Name = item.Name;
-                _dataContex.Items.Update(data);
-                _dataContex.SaveChanges();
-                return NoContent();
+                _dataContext.Items.Update(data);
+                _dataContext.SaveChanges();
+                return NoContent(); //statusCode 204
             }
             catch (System.Exception)
             {
